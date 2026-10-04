@@ -102,7 +102,9 @@ On a T4, every value matched within 1e-4 logits (`data/colab/`).
 ### Earlier stages
 
 - **Induction heads.** `notebooks/induction_head_sweep.ipynb` is the exhaustive
-  zero-ablation sweep over all 384 heads used to pick the candidates;
+  zero-ablation sweep over all 384 heads used to pick the candidates (top 5 by causal
+  effect plus the top detection head). Its results, from a rerun on a Colab T4, are in
+  `outputs/induction_heads/induction_exhaustive_results.csv`;
   `scripts/induction_calibration_modal.py` evaluates them on new seeds
   (`outputs/induction_heads/calibration_confirmation.json`).
 - **Discovery rankings.** `scripts/bracket_modal.py` and `scripts/indentation_modal.py`
