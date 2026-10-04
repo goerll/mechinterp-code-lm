@@ -127,5 +127,9 @@ On a T4, every value matched within 1e-4 logits (`data/colab/`).
   them as a ratio of sums (sum of effects over sum of gaps) and gives 95% intervals
   from a bootstrap over templates.
 
-The standard-library snippets in `data/final/transfer_and_natural.json` come from
-CPython and are covered by the license in `data/final/PYTHON_LICENSE.txt`.
+## License
+
+Code is released under the MIT license (`LICENSE`). Data, results, figures and tables
+are released under CC BY 4.0 (`LICENSE-DATA.md`). The standard-library snippets in
+`data/final/transfer_and_natural.json` come from CPython and remain under the Python
+Software Foundation License (`data/final/PYTHON_LICENSE.txt`).
