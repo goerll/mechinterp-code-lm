@@ -1,0 +1,50 @@
+\subsection{Transferência causal para as novas tarefas}
+As análises a seguir distinguem os pares elegíveis dos pares resolvidos entre todos os comprimentos de espaços. 
+Na tarefa de aumento, há 128 pares elegíveis e 72 pares resolvidos. 
+O dano do conjunto de indentação no subconjunto resolvido é 73,3\%. 
+Na tarefa de continuação, há 56 pares elegíveis e 0 pares resolvidos. 
+Os efeitos sobre a margem nessa família não são apresentados como mecanismo de resolução correta. 
+Na tarefa de redução, há 72 pares elegíveis e 54 pares resolvidos. 
+O dano do conjunto de indentação no subconjunto resolvido é 39,7\%. 
+
+
+\subsection{Eventos de fechamento em prefixos autoregressivos}
+Nos 192 pares de expressões Python, a acurácia pareada condicionada aos eventos é 100,0\%, enquanto o próximo token irrestrito inicia os dois fechamentos esperados em 0,5\% dos pares. 
+O efeito de L14H10 sobre a margem dos eventos é 0,131 (intervalo por família: [0,124; 0,138]). 
+O efeito de L15H15 sobre a margem dos eventos é 0,069 (intervalo por família: [0,067; 0,071]). 
+O efeito de L18H13 sobre a margem dos eventos é 0,156 (intervalo por família: [0,152; 0,159]). 
+O efeito do conjunto sobre a margem dos eventos é 0,545 (intervalo por família: [0,537; 0,553]). 
+
+
+\subsection{Eventos de fechamento em lacunas FIM}
+Nos 192 pares de expressões Python, a acurácia pareada condicionada aos eventos é 100,0\%, enquanto o próximo token irrestrito inicia os dois fechamentos esperados em 5,2\% dos pares. 
+O efeito de L14H10 sobre a margem dos eventos é 0,160 (intervalo por família: [0,151; 0,169]). 
+O efeito de L15H15 sobre a margem dos eventos é 0,073 (intervalo por família: [0,071; 0,075]). 
+O efeito de L18H13 sobre a margem dos eventos é 0,148 (intervalo por família: [0,145; 0,152]). 
+O efeito do conjunto sobre a margem dos eventos é 0,631 (intervalo por família: [0,622; 0,641]). 
+
+
+\subsection{Mediação em delimitadores}
+A rota de L14H10 para L15H15 apresenta dano normalizado de 0,01086, com intervalo [0,00929; 0,01235]. 
+A rota de L14H10 para L15H15 apresenta restauração normalizado de 0,01084, com intervalo [0,00890; 0,01267]. 
+Essas intervenções transferem a saída de um nó mediador e podem incluir caminhos indiretos.
+
+\subsection{Mediação em indentação}
+A rota de L14H10 para L15H3 apresenta dano normalizado de -0,00035, com intervalo [-0,00066; -0,00002]. 
+A rota de L14H10 para L15H3 apresenta restauração normalizado de -0,00041, com intervalo [-0,00087; 0,00004]. 
+A rota de L14H10 para L18H14 apresenta dano normalizado de 0,00396, com intervalo [0,00349; 0,00472]. 
+A rota de L14H10 para L18H14 apresenta restauração normalizado de 0,00453, com intervalo [0,00321; 0,00625]. 
+Essas intervenções transferem a saída de um nó mediador e podem incluir caminhos indiretos.
+
+\subsection{Intercâmbio de ativações e hipótese de coluna}
+Foram transplantadas saídas na posição final de exemplos de outras famílias, preservando o alvo de espaços ou alterando-o. O comparador entre estilos preserva a coluna-alvo e altera a relação entre coluna e profundidade. Esses testes verificam invariância parcial, não constituem uma abstração causal completa.
+
+\begin{center}\small\begin{tabular}{lrrrr}\toprule
+Head & Mesmo estilo/alvo & Outro alvo & Outra largura/alvo & Outro alvo \\ \midrule
+L14H10 & 0.015 & 0.127 & 0.052 & 0.068 \\
+L18H13 & 0.022 & 0.153 & 0.035 & 0.094 \\
+L18H14 & 0.016 & 0.157 & 0.055 & 0.104 \\
+L15H3 & 0.008 & 0.071 & 0.084 & 0.037 \\
+\bottomrule\end{tabular}\end{center}
+Os valores são mudanças absolutas de margem normalizadas pelo contraste pareado. Há 256 receptores no controle lexical e 70 com doador disponível entre estilos. As quatro candidatas preservam melhor a margem quando o alvo e o estilo se mantêm. Para L15H3, porém, preservar a coluna ao trocar o estilo perturba mais a margem que o comparador com outro alvo. Isso limita uma interpretação dessa saída como código invariável apenas da coluna absoluta; não demonstra ausência de informação sobre coluna.
+

@@ -38,7 +38,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.patch_santacoder import ensure_santacoder_transformers_compat
+from scripts.patch_santacoder import REVISION, ensure_santacoder_transformers_compat
+
+torch.set_grad_enabled(False)
 
 
 SAFE_TOKEN_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{1,11}$")
@@ -86,7 +88,11 @@ class BenchmarkResult:
 
 def load_model(model_name: str = "santacoder", device: str = "cpu") -> HookedTransformer:
     ensure_santacoder_transformers_compat()
-    model = HookedTransformer.from_pretrained(model_name, device=device)
+    model = HookedTransformer.from_pretrained(
+        model_name,
+        device=device,
+        revision=REVISION if model_name == "santacoder" else None,
+    )
     model.eval()
     return model
 
@@ -347,6 +353,59 @@ def mean_target_logprob(
     if not gathered_values:
         raise RuntimeError("Dataset for log-prob scoring is empty")
     return sum(gathered_values) / len(gathered_values)
+
+
+def intervened_target_logprob(
+    model: HookedTransformer,
+    dataset: Iterable[PromptExample],
+    kind: str,
+    *,
+    head: tuple[int, int],
+    baseline: str,
+) -> float:
+    """Score a head under zero, position-mean, or matched resample ablation.
+
+    ``resample`` uses the matched opposite-family prompt from the same example,
+    preserving sequence length. ``mean`` broadcasts that donor activation's
+    position mean. These are sensitivity analyses, not claims that either donor
+    is perfectly in-distribution.
+    """
+    if baseline not in {"zero", "mean", "resample"}:
+        raise ValueError(f"Unknown intervention baseline: {baseline}")
+    layer, head_index = head
+    act_name = tl_utils.get_act_name("z", layer)
+    values = []
+    for example in dataset:
+        token_ids = getattr(example, kind)
+        tokens = torch.tensor([token_ids], dtype=torch.long, device=model.cfg.device)
+        donor_kind = "control" if kind == "repeated" else "repeated"
+        donor_tokens = torch.tensor(
+            [getattr(example, donor_kind)], dtype=torch.long, device=model.cfg.device
+        )
+        if tokens.shape != donor_tokens.shape:
+            raise RuntimeError("Matched intervention prompts must have equal token length")
+        donor = None
+        if baseline != "zero":
+            _, donor_cache = model.run_with_cache(donor_tokens, names_filter=[act_name])
+            donor = donor_cache[act_name][:, :, head_index, :]
+
+        def intervene(z: torch.Tensor, hook) -> torch.Tensor:
+            del hook
+            z = z.clone()
+            if baseline == "zero":
+                z[:, :, head_index, :] = 0.0
+            elif baseline == "resample":
+                z[:, :, head_index, :] = donor
+            else:
+                z[:, :, head_index, :] = donor.mean(dim=1, keepdim=True)
+            return z
+
+        logits = model.run_with_hooks(tokens, fwd_hooks=[(act_name, intervene)])
+        logprobs = logits[:, -1].log_softmax(dim=-1)
+        values.append(float(logprobs[0, example.target].item()))
+    if not values:
+        raise RuntimeError("Dataset for intervention scoring is empty")
+    return sum(values) / len(values)
 
 
 def decode_sequence(model: HookedTransformer, token_ids: list[int]) -> list[str]:

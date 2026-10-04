@@ -1,0 +1,56 @@
+{
+  "model": "bigcode/santacoder",
+  "revision": "bb3be599767d93ce716293e9193c027e855a9524",
+  "native_environment": {
+    "transformers": "4.28.1"
+  },
+  "hooked_environment": {
+    "transformers": "4.57.6",
+    "transformer_lens": "2.17.0"
+  },
+  "rows": [
+    {
+      "prompt": "def add(a, b):\n    return a + b",
+      "n_tokens": 12,
+      "max_absolute_logit_difference": 4.186765193939209,
+      "mean_absolute_logit_difference": 4.1867122896072715,
+      "mean_logit_offset": 4.1867122896072715,
+      "max_absolute_centered_logit_difference": 5.7721888765516205e-05,
+      "centered_logit_cosine_similarity": 0.9999999999817544,
+      "top_token_matches": true
+    },
+    {
+      "prompt": "result = matrix[index][column",
+      "n_tokens": 7,
+      "max_absolute_logit_difference": 1.0562124252319336,
+      "mean_absolute_logit_difference": 1.0561730469479593,
+      "mean_logit_offset": -1.0561730469479593,
+      "max_absolute_centered_logit_difference": 3.937828397448939e-05,
+      "centered_logit_cosine_similarity": 0.9999999999938979,
+      "top_token_matches": true
+    },
+    {
+      "prompt": "function f(x) {\n  return call(x",
+      "n_tokens": 11,
+      "max_absolute_logit_difference": 3.0005695819854736,
+      "mean_absolute_logit_difference": 3.000510498902053,
+      "mean_logit_offset": 3.000510498902053,
+      "max_absolute_centered_logit_difference": 5.9083083420619076e-05,
+      "centered_logit_cosine_similarity": 0.9999999999795991,
+      "top_token_matches": true
+    },
+    {
+      "prompt": "alpha beta gamma alpha beta",
+      "n_tokens": 5,
+      "max_absolute_logit_difference": 1.251606822013855,
+      "mean_absolute_logit_difference": 1.2515891596042572,
+      "mean_logit_offset": -1.2515891596042572,
+      "max_absolute_centered_logit_difference": 2.2272702402403866e-05,
+      "centered_logit_cosine_similarity": 0.9999999999987519,
+      "top_token_matches": true
+    }
+  ],
+  "overall_max_absolute_centered_logit_difference": 5.9083083420619076e-05,
+  "tolerance": 0.002,
+  "passed": true
+}

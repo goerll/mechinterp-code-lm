@@ -33,7 +33,6 @@ htmlcov/
 .ipynb_checkpoints/
 
 # Local research workflow artifacts
-outputs/
 AGENTS.md
 CLAUDE.md
 .claude/
@@ -50,3 +49,6 @@ autoresearch.sh
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local reruns
+data/rerun/

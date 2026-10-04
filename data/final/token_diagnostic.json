@@ -1,0 +1,434 @@
+{
+  "schema_version": 2,
+  "mode": "diagnostic",
+  "model_revision": "bb3be599767d93ce716293e9193c027e855a9524",
+  "torch": "2.6.0+cu124",
+  "gpu": "NVIDIA A10",
+  "heads": [
+    [
+      14,
+      10
+    ],
+    [
+      15,
+      15
+    ],
+    [
+      18,
+      13
+    ],
+    [
+      18,
+      14
+    ],
+    [
+      15,
+      3
+    ]
+  ],
+  "examples": [
+    {
+      "label": "transfer_f0_increase_w4_d1_c0",
+      "family": "new_0",
+      "task": "increase",
+      "width": 4,
+      "depth": 1,
+      "comment_lines": 0,
+      "clean_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n    if enabled:\n<fim-suffix>pass\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n        if enabled:\n<fim-suffix>pass\n<fim-middle>",
+      "clean_target": "        ",
+      "corrupt_target": "            ",
+      "top": [
+        {
+          "text": "       ",
+          "p": 0.4862750172615051
+        },
+        {
+          "text": "        ",
+          "p": 0.47863835096359253
+        },
+        {
+          "text": "      ",
+          "p": 0.0082264244556427
+        },
+        {
+          "text": "    ",
+          "p": 0.006095202174037695
+        },
+        {
+          "text": "           ",
+          "p": 0.003898816416040063
+        },
+        {
+          "text": "   ",
+          "p": 0.0033495917450636625
+        },
+        {
+          "text": "         ",
+          "p": 0.0031575325410813093
+        },
+        {
+          "text": "\n       ",
+          "p": 0.0019764741882681847
+        }
+      ],
+      "generated": "        if inner:\n            pass"
+    },
+    {
+      "label": "transfer_f0_increase_w4_d2_c0",
+      "family": "new_0",
+      "task": "increase",
+      "width": 4,
+      "depth": 2,
+      "comment_lines": 0,
+      "clean_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n        if enabled:\n<fim-suffix>pass\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n            if enabled:\n<fim-suffix>pass\n<fim-middle>",
+      "clean_target": "            ",
+      "corrupt_target": "                ",
+      "top": [
+        {
+          "text": "           ",
+          "p": 0.6786702275276184
+        },
+        {
+          "text": "            ",
+          "p": 0.28027257323265076
+        },
+        {
+          "text": "        ",
+          "p": 0.010161293670535088
+        },
+        {
+          "text": "          ",
+          "p": 0.00990977231413126
+        },
+        {
+          "text": "       ",
+          "p": 0.006238200701773167
+        },
+        {
+          "text": "               ",
+          "p": 0.0024876755196601152
+        },
+        {
+          "text": "         ",
+          "p": 0.002129258820787072
+        },
+        {
+          "text": "   ",
+          "p": 0.0015342459082603455
+        }
+      ],
+      "generated": "            pass\n        if disabled:"
+    },
+    {
+      "label": "transfer_f0_continuation_w4_d1_c0",
+      "family": "new_0",
+      "task": "continuation",
+      "width": 4,
+      "depth": 1,
+      "comment_lines": 0,
+      "clean_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n    if enabled:\n        pass\n<fim-suffix>pass\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n        if enabled:\n            pass\n<fim-suffix>pass\n<fim-middle>",
+      "clean_target": "        ",
+      "corrupt_target": "            ",
+      "top": [
+        {
+          "text": "   ",
+          "p": 0.6922640204429626
+        },
+        {
+          "text": "\n",
+          "p": 0.1133967861533165
+        },
+        {
+          "text": "\n   ",
+          "p": 0.0473165437579155
+        },
+        {
+          "text": "#",
+          "p": 0.04218868538737297
+        },
+        {
+          "text": "    ",
+          "p": 0.01984664611518383
+        },
+        {
+          "text": "       ",
+          "p": 0.01547364890575409
+        },
+        {
+          "text": "else",
+          "p": 0.012713329866528511
+        },
+        {
+          "text": "def",
+          "p": 0.01057701651006937
+        }
+      ],
+      "generated": "    if outer:\n        if"
+    },
+    {
+      "label": "transfer_f0_continuation_w4_d2_c0",
+      "family": "new_0",
+      "task": "continuation",
+      "width": 4,
+      "depth": 2,
+      "comment_lines": 0,
+      "clean_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n        if enabled:\n            pass\n<fim-suffix>pass\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n            if enabled:\n                pass\n<fim-suffix>pass\n<fim-middle>",
+      "clean_target": "            ",
+      "corrupt_target": "                ",
+      "top": [
+        {
+          "text": "       ",
+          "p": 0.4214734435081482
+        },
+        {
+          "text": "   ",
+          "p": 0.30718719959259033
+        },
+        {
+          "text": "\n",
+          "p": 0.05912540480494499
+        },
+        {
+          "text": "#",
+          "p": 0.04295491799712181
+        },
+        {
+          "text": "\n   ",
+          "p": 0.04138915613293648
+        },
+        {
+          "text": "           ",
+          "p": 0.03390102833509445
+        },
+        {
+          "text": "\n       ",
+          "p": 0.016829395666718483
+        },
+        {
+          "text": "        ",
+          "p": 0.012256800197064877
+        }
+      ],
+      "generated": "        if disabled:\n            pass"
+    },
+    {
+      "label": "transfer_f0_dedent_w4_d1_c0",
+      "family": "new_0",
+      "task": "dedent",
+      "width": 4,
+      "depth": 1,
+      "comment_lines": 0,
+      "clean_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n    if enabled:\n        pass\n<fim-suffix>else: pass\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n        if enabled:\n            pass\n<fim-suffix>else: pass\n<fim-middle>",
+      "clean_target": "    ",
+      "corrupt_target": "        ",
+      "top": [
+        {
+          "text": "   ",
+          "p": 0.6988382339477539
+        },
+        {
+          "text": "       ",
+          "p": 0.07057873904705048
+        },
+        {
+          "text": "    ",
+          "p": 0.056407611817121506
+        },
+        {
+          "text": "<|endoftext|>",
+          "p": 0.04612305760383606
+        },
+        {
+          "text": "\n",
+          "p": 0.025666380301117897
+        },
+        {
+          "text": "else",
+          "p": 0.02149364911019802
+        },
+        {
+          "text": "#",
+          "p": 0.016881776973605156
+        },
+        {
+          "text": "        ",
+          "p": 0.014824487268924713
+        }
+      ],
+      "generated": "    else: pass\n\n"
+    },
+    {
+      "label": "transfer_f0_dedent_w4_d2_c0",
+      "family": "new_0",
+      "task": "dedent",
+      "width": 4,
+      "depth": 2,
+      "comment_lines": 0,
+      "clean_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n        if enabled:\n            pass\n<fim-suffix>else: pass\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def dispatch(item):\n    if outer:\n        if middle:\n            pass\n            if enabled:\n                pass\n<fim-suffix>else: pass\n<fim-middle>",
+      "clean_target": "        ",
+      "corrupt_target": "            ",
+      "top": [
+        {
+          "text": "       ",
+          "p": 0.5121435523033142
+        },
+        {
+          "text": "   ",
+          "p": 0.1951816976070404
+        },
+        {
+          "text": "        ",
+          "p": 0.11763819307088852
+        },
+        {
+          "text": "           ",
+          "p": 0.07719184458255768
+        },
+        {
+          "text": "    ",
+          "p": 0.033380795270204544
+        },
+        {
+          "text": "            ",
+          "p": 0.016493817791342735
+        },
+        {
+          "text": "#",
+          "p": 0.007772144395858049
+        },
+        {
+          "text": "      ",
+          "p": 0.0038284175097942352
+        }
+      ],
+      "generated": "        else: pass\n    else"
+    },
+    {
+      "label": "t4_nested_if_short",
+      "family": "4",
+      "task": "indent",
+      "clean_prompt": "<fim-prefix>def render(node):\n    if outer:\n        result = visit(node)\n        if enabled:\n<fim-suffix>return result\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def render(node):\n    if outer:\n        result = visit(node)\n    if enabled:\n<fim-suffix>return result\n<fim-middle>",
+      "clean_target": "            ",
+      "corrupt_target": "        ",
+      "top": [
+        {
+          "text": "           ",
+          "p": 0.9226462841033936
+        },
+        {
+          "text": "            ",
+          "p": 0.0662296935915947
+        },
+        {
+          "text": "          ",
+          "p": 0.0035064280964434147
+        },
+        {
+          "text": "        ",
+          "p": 0.002033733995631337
+        },
+        {
+          "text": "               ",
+          "p": 0.0010135475313290954
+        },
+        {
+          "text": "       ",
+          "p": 0.0009508667862974107
+        },
+        {
+          "text": "         ",
+          "p": 0.0009297553915530443
+        },
+        {
+          "text": "#",
+          "p": 0.0006416012765839696
+        }
+      ],
+      "generated": "            result = result.replace"
+    },
+    {
+      "label": "t4_nested_if_long",
+      "family": "4",
+      "task": "indent",
+      "clean_prompt": "<fim-prefix>def render(node):\n    if outer:\n        result = visit(node)\n        trace = value\n        values = [value]\n        if enabled:\n<fim-suffix>return result\n<fim-middle>",
+      "corrupt_prompt": "<fim-prefix>def render(node):\n    if outer:\n        result = visit(node)\n        trace = value\n        values = [value]\n    if enabled:\n<fim-suffix>return result\n<fim-middle>",
+      "clean_target": "            ",
+      "corrupt_target": "        ",
+      "top": [
+        {
+          "text": "           ",
+          "p": 0.9923998713493347
+        },
+        {
+          "text": "            ",
+          "p": 0.0014496073126792908
+        },
+        {
+          "text": "          ",
+          "p": 0.0012073529651388526
+        },
+        {
+          "text": "       ",
+          "p": 0.0010498793562874198
+        },
+        {
+          "text": "#",
+          "p": 0.0008967427420429885
+        },
+        {
+          "text": "               ",
+          "p": 0.0006707683205604553
+        },
+        {
+          "text": "         ",
+          "p": 0.0005099326372146606
+        },
+        {
+          "text": "   ",
+          "p": 0.00037115233135409653
+        }
+      ],
+      "generated": "            values.append(trace"
+    }
+  ],
+  "elapsed_seconds": 13.91688060760498,
+  "provenance": {
+    "dataset_sha256": "d97c4a76f45b8d7241be73416e5328e471b02eb1d66c6d00c7e4e1c77faed873",
+    "source_sha256": {
+      "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scripts/benchmark.py": "0a02530a37947de6943b38c1105798a807f848f148d11d0e964e437d4180a54d",
+      "scripts/bracket_candidate_modal.py": "3025262ac473ec3d519b84df1e752d601d43e35ae941170e43b7647362b66141",
+      "scripts/bracket_dataset.py": "095900cdeff6359b025a9617cbe362f614ca03e8aaa0ca8e01e9be090d051fd9",
+      "scripts/bracket_experiment.py": "537a9fa1cb9d78fd340cef93dfef676aa5d4d523ed2b320b7247932da186dc62",
+      "scripts/bracket_modal.py": "d3d382ea1de48915f969c041e5f44454c8cccf5a65dd351a748870b4c9827c77",
+      "scripts/bracket_path_modal.py": "2c5095f0f391d2cd59feb6d75d1338470b15b995bb8e19b11c07fb5ec01d7553",
+      "scripts/final_datasets.py": "da1a4bca23c8a5b0e79d725851bc7fc206c0ea16ebd9e4df0912c8ff8e3ad6be",
+      "scripts/final_experiments.py": "fd83276a1c15ec70a3454e67fc07b5f153dd1f5e0a3b3980b76fbd0d20ecc160",
+      "scripts/final_modal.py": "4a23cb0760c4ef38b26b0bb724a51530c84289537401a4218d4b8358eea5c072",
+      "scripts/head_sets_modal.py": "3ff9ca1a437cce2b44646ab17f64b6191600177fa51277cad6cd1e0cf0f0353d",
+      "scripts/indentation_attention_modal.py": "10cc19e94c0b76911bc3627408ae921fe4a6936bec3c97158b0a5b01ccf583cf",
+      "scripts/indentation_candidate_modal.py": "1b44611f1001e47aade08776dc1e798a38f18c62a22551f1110100efd0059223",
+      "scripts/indentation_dataset.py": "cf484744577d1e0e3a5b14d146ada33fc686841cbb0ba7cc77c38baa16840aad",
+      "scripts/indentation_experiment.py": "45a7a97dfdda20150e58d909cb4f76a4a93690c8c34c225ae428d67e598c4c76",
+      "scripts/indentation_modal.py": "80c0a550b67e41b1cfa67c1343f3bf65c40d6449a21f28f5e77447affc186a48",
+      "scripts/indentation_path_modal.py": "f3d9155d1ecc9e3c2039c0aa62c755ee9e9f7478c82a536c4fc9eb51f6ae83f2",
+      "scripts/induction_calibration_modal.py": "f09152f05edec5634ebbdb2195f1efdaeb4e3fd27cc82e2bbe40514b62b4c8a2",
+      "scripts/modal_run.py": "ea2c94bbbc7129b52aa9475513e2b44dac0b626137fdce85940065a17126fe81",
+      "scripts/model_equivalence_modal.py": "a7ee361369afbd648e2d989afb57dfef02e59b92a1ededb15de33321097c13da",
+      "scripts/patch_santacoder.py": "29c8a07e7b592b3b9a5b59a77af1d3c80bc8026913f4054a889ca6359cc42481",
+      "scripts/plot_phase3_results.py": "2218a25aab976b36be561f64a8538f348a6a532904165196bc6d6e08f4784c16",
+      "scripts/plot_phase_results.py": "325205124c831bf3c0f8030b6b71e0453cc136589b20a0a0fbf17074dda2acc4",
+      "scripts/research_statistics.py": "0d231cd6ecf81f7cf9e5b4591146a4720ecf15ae68226cc1245f1838de99e987",
+      "scripts/verify_santacoder_setup.py": "259b60acbffb4f81308a3dbbbfabd7d3d3607cb83ee54a82092f480bf86d578e"
+    },
+    "git_head": "b994644e817fba921dd29009ded1a16ec434dfbe",
+    "client_wall_seconds": 25.81059718132019
+  }
+}

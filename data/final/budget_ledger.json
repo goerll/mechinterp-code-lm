@@ -1,0 +1,97 @@
+{
+  "pricing_source": "https://modal.com/pricing",
+  "checked_on": "2026-09-06",
+  "a10_usd_per_second": 0.000306,
+  "runs": [
+    {
+      "file": "behavior_run.json",
+      "mode": "behavior",
+      "gpu_function_seconds": 53.249396085739136,
+      "client_wall_seconds": 66.1399073600769,
+      "gpu_only_runtime_estimate_usd": 0.016294315202236176
+    },
+    {
+      "file": "boundary_run.json",
+      "mode": "boundary",
+      "gpu_function_seconds": 56.62149429321289,
+      "client_wall_seconds": 69.66179347038269,
+      "gpu_only_runtime_estimate_usd": 0.017326177253723145
+    },
+    {
+      "file": "bracket_validation.json",
+      "mode": "bracket",
+      "gpu_function_seconds": 244.36227798461914,
+      "client_wall_seconds": 256.159640789032,
+      "gpu_only_runtime_estimate_usd": 0.07477485706329345
+    },
+    {
+      "file": "content_transfer.json",
+      "mode": "content",
+      "gpu_function_seconds": 143.58926725387573,
+      "client_wall_seconds": 160.00356078147888,
+      "gpu_only_runtime_estimate_usd": 0.043938315779685974
+    },
+    {
+      "file": "curve_bracket.json",
+      "mode": "curve_bracket",
+      "gpu_function_seconds": 145.79257941246033,
+      "client_wall_seconds": 158.39548563957214,
+      "gpu_only_runtime_estimate_usd": 0.04461252930021286
+    },
+    {
+      "file": "curve_indent.json",
+      "mode": "curve_indent",
+      "gpu_function_seconds": 106.7960913181305,
+      "client_wall_seconds": 118.70192790031433,
+      "gpu_only_runtime_estimate_usd": 0.03267960394334793
+    },
+    {
+      "file": "delimiter_events.json",
+      "mode": "delimiter_events",
+      "gpu_function_seconds": 145.84724831581116,
+      "client_wall_seconds": 166.02969789505005,
+      "gpu_only_runtime_estimate_usd": 0.04462925798463822
+    },
+    {
+      "file": "delimiter_events_fim.json",
+      "mode": "delimiter_events_fim",
+      "gpu_function_seconds": 125.5674262046814,
+      "client_wall_seconds": 140.8663945198059,
+      "gpu_only_runtime_estimate_usd": 0.03842363241863251
+    },
+    {
+      "file": "indent_boundary_validation.json",
+      "mode": "indent_boundary",
+      "gpu_function_seconds": 165.558109998703,
+      "client_wall_seconds": 178.70478463172913,
+      "gpu_only_runtime_estimate_usd": 0.050660781659603124
+    },
+    {
+      "file": "indent_validation.json",
+      "mode": "indent",
+      "gpu_function_seconds": 168.9710156917572,
+      "client_wall_seconds": 180.83605527877808,
+      "gpu_only_runtime_estimate_usd": 0.051705130801677705
+    },
+    {
+      "file": "token_diagnostic.json",
+      "mode": "diagnostic",
+      "gpu_function_seconds": 13.91688060760498,
+      "client_wall_seconds": 25.81059718132019,
+      "gpu_only_runtime_estimate_usd": 0.004258565465927124
+    },
+    {
+      "file": "transfer_boundary_validation.json",
+      "mode": "transfer_boundary",
+      "gpu_function_seconds": 246.98257184028625,
+      "client_wall_seconds": 262.70677638053894,
+      "gpu_only_runtime_estimate_usd": 0.0755766669831276
+    }
+  ],
+  "new_gpu_function_seconds": 1617.2543590068817,
+  "gpu_only_runtime_estimate_usd": 0.49487983385610584,
+  "conservative_compute_allowance_used_usd": 0.9812091420054436,
+  "user_total_limit_usd": 30,
+  "final_pass_allowance_usd": 8,
+  "note": "Runtime estimate, not an invoice. GPU function time omits some cold starts; CPU, memory, volumes and earlier sessions are not fully reconciled. No new paid subscription."
+}

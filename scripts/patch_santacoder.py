@@ -10,6 +10,7 @@ from huggingface_hub import hf_hub_download
 from transformers import AutoConfig
 
 REPO_ID = "bigcode/santacoder"
+REVISION = "bb3be599767d93ce716293e9193c027e855a9524"
 MODEL_FILE = "modeling_gpt2_mq.py"
 TARGET = "from transformers.modeling_utils import PreTrainedModel, SequenceSummary"
 REPLACEMENT = "from transformers.modeling_utils import PreTrainedModel"
@@ -53,12 +54,21 @@ def _ensure_dynamic_module_copy(snapshot_path: Path, dynamic_module_path: Path) 
 
 
 def ensure_santacoder_transformers_compat() -> list[str]:
-    config = AutoConfig.from_pretrained(REPO_ID, trust_remote_code=True)
+    config = AutoConfig.from_pretrained(
+        REPO_ID,
+        revision=REVISION,
+        trust_remote_code=True,
+    )
     commit_hash = getattr(config, "_commit_hash", None)
     if not commit_hash:
         raise RuntimeError(f"Could not determine commit hash for {REPO_ID}")
 
-    snapshot_path = Path(hf_hub_download(REPO_ID, MODEL_FILE, revision=commit_hash))
+    if commit_hash != REVISION:
+        raise RuntimeError(
+            f"Resolved unexpected {REPO_ID} revision: expected {REVISION}, got {commit_hash}"
+        )
+
+    snapshot_path = Path(hf_hub_download(REPO_ID, MODEL_FILE, revision=REVISION))
     results = [_patch_file(snapshot_path)]
 
     dynamic_module_path = _dynamic_module_path(commit_hash)

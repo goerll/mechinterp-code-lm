@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.patch_santacoder import ensure_santacoder_transformers_compat
+from scripts.patch_santacoder import REVISION, ensure_santacoder_transformers_compat
 from transformer_lens import HookedTransformer
 
 EXPECTED_VERSIONS = {
@@ -36,7 +36,9 @@ def main() -> int:
         print(f"  {result}")
 
     print("\nLoading SantaCoder with TransformerLens...")
-    model = HookedTransformer.from_pretrained("santacoder", device="cpu")
+    model = HookedTransformer.from_pretrained(
+        "santacoder", device="cpu", revision=REVISION
+    )
 
     print("\nLoaded model summary:")
     print(f"  device={model.cfg.device}")
@@ -46,6 +48,7 @@ def main() -> int:
     print(f"  d_model={model.cfg.d_model}")
     print(f"  n_ctx={model.cfg.n_ctx}")
     print(f"  tokenizer={model.cfg.tokenizer_name}")
+    print(f"  revision={REVISION}")
     return 0
 
 
