@@ -11,7 +11,15 @@ import matplotlib.ticker
 import numpy as np
 from matplotlib.patches import FancyBboxPatch
 
-from scripts.palette import GRAY, SAGE_CMAP, SAGE_DARK, SLATE, TERRACOTTA
+from scripts.palette import (
+    GRAY,
+    SAGE_CMAP,
+    SAGE_DARK,
+    SAGE_FILL,
+    SLATE_FILL,
+    TERRACOTTA,
+    TERRACOTTA_FILL,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "figures/final"
@@ -98,8 +106,8 @@ def main():
         x = np.arange(3)
         for shift, (run, label, color) in enumerate(
             (
-                ("behavior_run", "Fronteira original", TERRACOTTA),
-                ("boundary_run", "Fronteira deslocada", SAGE_DARK),
+                ("behavior_run", "Fronteira original", TERRACOTTA_FILL),
+                ("boundary_run", "Fronteira deslocada", SAGE_FILL),
             )
         ):
             values = [
@@ -129,7 +137,7 @@ def main():
                     ha="center",
                     va="bottom",
                     fontsize=8,
-                    color="white",
+                    color="#1f1f1f",
                 )
         ax.set_xticks(x, list(translations.values()))
         ax.set_ylim(0, 105)
@@ -164,9 +172,9 @@ def main():
             "indent_boundary_validation": "Indentação / fronteira deslocada",
         }
         colors = {
-            "bracket_validation": SLATE,
-            "indent_validation": TERRACOTTA,
-            "indent_boundary_validation": SAGE_DARK,
+            "bracket_validation": SLATE_FILL,
+            "indent_validation": TERRACOTTA_FILL,
+            "indent_boundary_validation": SAGE_FILL,
         }
         for i, run in enumerate(runs):
             effects = summary[run]["validation"]["all_eligible"]["effects"]

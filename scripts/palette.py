@@ -18,6 +18,12 @@ TERRACOTTA_LIGHT = "#ecd3c3"
 SLATE = "#5d6f7d"
 GRAY = "#8a8f94"
 
+# Lighter, cleaner fills for bars (same hues and meanings as above): solid dark
+# fills side by side read as muddy, so bars use these mid tones.
+SAGE_FILL = "#86b07f"
+TERRACOTTA_FILL = "#e0915f"
+SLATE_FILL = "#a3b3c2"
+
 SAGE_CMAP = LinearSegmentedColormap.from_list(
     "sage", ["#ffffff", SAGE_LIGHT, SAGE, SAGE_DARK, "#2c4a2b"]
 )
