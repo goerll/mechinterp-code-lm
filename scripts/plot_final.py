@@ -11,6 +11,8 @@ import matplotlib.ticker
 import numpy as np
 from matplotlib.patches import FancyBboxPatch
 
+from scripts.palette import GRAY, SAGE_CMAP, SAGE_DARK, SLATE, TERRACOTTA
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "figures/final"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -58,15 +60,15 @@ def main():
                     for distance in (0, 8)
                 ]
             )
-        fig, ax = plt.subplots(figsize=(8, 4.5))
-        im = ax.imshow(matrix, vmin=0, vmax=1, cmap="Blues", aspect="auto")
+        fig, ax = plt.subplots(figsize=(6.4, 3.6))
+        im = ax.imshow(matrix, vmin=0, vmax=1, cmap=SAGE_CMAP, aspect="auto")
         ax.set_xticks(
             range(4),
             [
-                "Original\n0 comentários",
-                "Original\n8 comentários",
-                "Deslocada\n0 comentários",
-                "Deslocada\n8 comentários",
+                "Original\nsem coment.",
+                "Original\n8 coment.",
+                "Deslocada\nsem coment.",
+                "Deslocada\n8 coment.",
             ],
         )
         translations = {
@@ -80,19 +82,24 @@ def main():
                 ax.text(
                     j,
                     i,
-                    f"{value:.0%}",
+                    f"{value * 100:.0f}%",
                     ha="center",
                     va="center",
-                    color="white" if value > 0.55 else "black",
+                    fontsize=9,
+                    color="white" if value > 0.6 else "black",
                 )
-        fig.colorbar(im, ax=ax, label="Acurácia")
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+        ax.tick_params(length=0)
+        ax.set_xlabel("Fronteira da lacuna e comentários entre a instrução e a lacuna")
+        fig.colorbar(im, ax=ax, label="Acurácia", format=lambda v, _: f"{v * 100:.0f}%")
         save(fig, "boundary_behavior")
-        fig, ax = plt.subplots(figsize=(7, 4))
+        fig, ax = plt.subplots(figsize=(5.2, 3.0))
         x = np.arange(3)
         for shift, (run, label, color) in enumerate(
             (
-                ("behavior_run", "Fronteira original", "#446f9b"),
-                ("boundary_run", "Um espaço no sufixo", "#d68438"),
+                ("behavior_run", "Fronteira original", TERRACOTTA),
+                ("boundary_run", "Fronteira deslocada", SAGE_DARK),
             )
         ):
             values = [
@@ -104,19 +111,30 @@ def main():
                 [y - v["ci"][0] for y, v in zip(ys, values)],
                 [v["ci"][1] - y for y, v in zip(ys, values)],
             ]
-            ax.bar(
+            bars = ax.bar(
                 x + (shift - 0.5) * 0.34,
-                ys,
+                [100 * y for y in ys],
                 0.34,
                 label=label,
                 color=color,
-                yerr=err,
+                yerr=[[100 * e for e in side] for side in err],
                 capsize=3,
+                error_kw={"ecolor": "#444444", "lw": 1},
             )
+            for bar, y in zip(bars, ys):
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    2,
+                    f"{100 * y:.0f}%",
+                    ha="center",
+                    va="bottom",
+                    fontsize=8,
+                    color="white",
+                )
         ax.set_xticks(x, list(translations.values()))
-        ax.set_ylim(0, 1)
-        ax.set_ylabel("Reprodução do recuo original")
-        ax.legend(frameon=False)
+        ax.set_ylim(0, 105)
+        ax.set_ylabel("Acurácia (%)")
+        ax.legend(frameon=False, loc="upper center", ncol=2, bbox_to_anchor=(0.5, 1.15))
         save(fig, "natural_behavior")
     runs = [
         r
@@ -128,7 +146,7 @@ def main():
         if r in summary
     ]
     if runs:
-        fig, ax = plt.subplots(figsize=(8, 4.5))
+        fig, ax = plt.subplots(figsize=(6.4, 3.2))
         names = [
             "L14H10",
             "L15H15",
@@ -142,16 +160,27 @@ def main():
         x = np.arange(len(names))
         labels = {
             "bracket_validation": "Delimitadores",
-            "indent_validation": "Indentação original",
+            "indent_validation": "Indentação / fronteira original",
             "indent_boundary_validation": "Indentação / fronteira deslocada",
+        }
+        colors = {
+            "bracket_validation": SLATE,
+            "indent_validation": TERRACOTTA,
+            "indent_boundary_validation": SAGE_DARK,
         }
         for i, run in enumerate(runs):
             effects = summary[run]["validation"]["all_eligible"]["effects"]
             vals = [effects[h + "/resample/damage"]["estimate"] for h in names]
-            ax.bar(x + (i - (len(runs) - 1) / 2) * 0.25, vals, 0.25, label=labels[run])
+            ax.bar(
+                x + (i - (len(runs) - 1) / 2) * 0.25,
+                vals,
+                0.25,
+                label=labels[run],
+                color=colors[run],
+            )
         ax.set_xticks(x, names, rotation=40, ha="right")
-        ax.axhline(0, color="black", lw=0.6)
-        ax.set_ylabel("Dano / diferença limpa–corrompida")
+        ax.axhline(0, color=GRAY, lw=0.8)
+        ax.set_ylabel("Dano normalizado")
         ax.legend(frameon=False, fontsize=8)
         save(fig, "head_effects")
     curve_runs = [r for r in ("curve_bracket", "curve_indent") if r in summary]
@@ -162,7 +191,7 @@ def main():
         for ax, run in zip(axes[0], curve_runs):
             values = summary[run]["curves"]["all"]
             sizes = (0, 4, 8, 16, 32, 64, 128, 384)
-            for kind, color in (("ranked", "#286b92"), ("random", "#a7662d")):
+            for kind, color in (("ranked", SAGE_DARK), ("random", TERRACOTTA)):
                 for direction, style in (("forward", "-"), ("reverse", "--")):
                     rows = [values[f"{kind}/{n}/{direction}"] for n in sizes]
                     label = ("Descoberta" if kind == "ranked" else "Aleatória") + (

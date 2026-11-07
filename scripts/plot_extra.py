@@ -18,8 +18,10 @@ import matplotlib.ticker
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "figures/final"
-RANKED = "#286b92"
-RANDOM = "#a7662d"
+from scripts.palette import FIGSIZE_FULL, GRAY, SAGE_DARK, TERRACOTTA
+
+RANKED = SAGE_DARK
+RANDOM = TERRACOTTA
 
 plt.rcParams.update(
     {
@@ -63,7 +65,7 @@ def panel(ax, run, title):
     ax.plot(rgrid, [100 * v for v in med], "-s", color=RANDOM, lw=2, ms=4,
             label="Aleatórias: mediana")
 
-    ax.axhline(80, color="gray", lw=1, ls=":")
+    ax.axhline(80, color=GRAY, lw=1, ls=":")
     ax.set_xscale("symlog", linthresh=4)
     ax.set_xlim(0, 420)
     ax.set_ylim(-5, 118)
@@ -76,7 +78,7 @@ def panel(ax, run, title):
 
 
 def main():
-    fig, axes = plt.subplots(1, 2, figsize=(6.4, 3.0), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=FIGSIZE_FULL, sharey=True)
     panel(axes[0], "curve_bracket", "Delimitadores")
     panel(axes[1], "curve_indent", "Indentação")
     axes[0].set_ylabel("Efeito recuperado (%)")
