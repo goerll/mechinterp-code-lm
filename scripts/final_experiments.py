@@ -429,7 +429,7 @@ def run(mode, dataset=None):
         "schema_version": 2,
         "mode": mode,
         "model_revision": REVISION,
-        "torch": torch.__version__,
+        "torch": str(torch.__version__),
         "gpu": torch.cuda.get_device_name(),
         "heads": HEADS,
     }
@@ -494,6 +494,10 @@ def run(mode, dataset=None):
         rows = behavior(model, [shift_boundary(r) for r in dataset["transfer"]])
         payload["behavior"] = rows
         payload["validation"] = validate(model, rows, exhaustive=False)
+    elif mode in ("curve_bracket_seeds", "curve_indent_seeds", "addback_bracket"):
+        from scripts.extra_experiments import run_extra
+
+        payload.update(run_extra(model, mode, dataset))
     elif mode in ("curve_indent", "curve_bracket"):
         from scripts.final_datasets import shift_boundary
 

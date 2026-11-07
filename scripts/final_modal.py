@@ -29,7 +29,7 @@ image = (
 cache = modal.Volume.from_name("mechinterp-hf-cache", create_if_missing=True)
 
 
-@app.function(image=image, gpu="A10G", timeout=1800, volumes={"/cache": cache})
+@app.function(image=image, gpu="A10G", timeout=3600, volumes={"/cache": cache})
 def remote(mode, dataset):
     import os
 

@@ -31,6 +31,10 @@ MODES = (
     "delimiter_events",
     "delimiter_events_fim",
     "diagnostic",
+    # Follow-ups to the advisor's review (scripts/extra_experiments.py)
+    "curve_bracket_seeds",
+    "curve_indent_seeds",
+    "addback_bracket",
 )
 
 
@@ -38,7 +42,7 @@ def prepare_dataset(mode: str) -> dict:
     """Frozen datasets plus, for curve modes, the discovery-split head rankings."""
     dataset = json.loads((ROOT / "data/final/transfer_and_natural.json").read_text())
     dataset["rankings"] = {}
-    if mode.startswith("curve_"):
+    if mode.startswith(("curve_", "addback_")):
         for task, source in (
             ("indent", "outputs/indentation/discovery_causal.json"),
             ("bracket", "outputs/bracket_matching/causal_discovery.json"),
