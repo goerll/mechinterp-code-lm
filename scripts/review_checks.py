@@ -11,6 +11,8 @@ No GPU and no third-party packages:
 * Delimiters by language (M6): candidate effects split by template language.
   Even templates are Python (swap offset +1), odd ones JavaScript (+2)
   (``data/final/bracket_validation.json``).
+* Continuation after ``pass`` (discarded as a task): which indentation level the
+  model prefers instead (``data/final/boundary_run.json``, no comment lines).
 * Discovery sample: which pairs ranked the 384 heads (``outputs/*/``: every
   solved discovery pair), and the candidates' delimiter effect by closer in the
   confirmation split.
@@ -119,6 +121,26 @@ def by_closer():
     return out
 
 
+def continuation_preference():
+    rows = json.loads((ROOT / "data/final/boundary_run.json").read_text())["transfer"]
+    rows = [r for r in rows if r["task"] == "continuation" and r["comment_lines"] == 0]
+    counts = Counter()
+    for r in rows:
+        for side in ("clean", "corrupt"):
+            target, top, width = len(r[f"{side}_target"]), r[f"{side}_top_token"], r["width"]
+            if top and not top.strip(" "):
+                n = len(top)
+                if n == target:
+                    counts["keeps level"] += 1
+                elif n < target and (target - n) % width == 0:
+                    counts["exits block (outer level)"] += 1
+                else:
+                    counts[f"other spaces ({n})"] += 1
+            else:
+                counts[f"non-space {top!r}"] += 1
+    return {"pairs": len(rows), "entries": sum(counts.values()), "top_token": dict(counts)}
+
+
 def main():
     print(
         json.dumps(
@@ -128,6 +150,7 @@ def main():
                 "delimiters_by_language": by_language(),
                 "discovery_sample": discovery_sample(),
                 "delimiters_by_closer": by_closer(),
+                "continuation_preference": continuation_preference(),
             },
             indent=2,
             ensure_ascii=False,
