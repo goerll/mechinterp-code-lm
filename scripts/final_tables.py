@@ -111,17 +111,31 @@ def main():
         r"Heads & Delim. limpa & Delim. reversa & Indent. limpa & Indent. reversa \\",
         r"\midrule",
     ]
-    for n in (0, 4, 8, 16, 32, 64, 128, 384):
+    # Follow-up runs (advisor review): every ranked size from 33 to 64.
+    fine = {}
+    for run in ("curve_bracket", "curve_indent"):
+        path = ROOT / f"data/extra/{run}_fine_summary.json"
+        if path.exists():
+            fine[run] = json.loads(path.read_text())["ranked"]
+
+    def curve_value(run, n, direction):
+        key = f"ranked/{n}/{direction}"
+        if run in s and key in s[run]["curves"]["all"]:
+            return s[run]["curves"]["all"][key]["estimate"]
+        if f"{n}/{direction}" in fine.get(run, {}):
+            return fine[run][f"{n}/{direction}"]
+        return None
+
+    sizes = (0, 4, 8, 16, 32, 64, 128, 384)
+    if fine:
+        # 35/36 and 48/49: last insufficient and first sufficient size.
+        sizes = sorted(set(sizes) | {35, 36, 40, 48, 49, 56})
+    for n in sizes:
         values = []
         for run in ("curve_bracket", "curve_indent"):
             for direction in ("forward", "reverse"):
-                values.append(
-                    f"{s[run]['curves']['all'][f'ranked/{n}/{direction}']['estimate']:.3f}".replace(
-                        ".", ","
-                    )
-                    if run in s
-                    else "--"
-                )
+                v = curve_value(run, n, direction)
+                values.append("--" if v is None else f"{v:.3f}".replace(".", ","))
         curves.append(str(n) + " & " + " & ".join(values) + r" \\")
     curves += [r"\bottomrule", r"\end{tabular}"]
     (out / "curves.tex").write_text("\n".join(curves) + "\n")

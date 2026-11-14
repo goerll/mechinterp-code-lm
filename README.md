@@ -30,6 +30,7 @@ Main findings:
 scripts/      experiment, analysis and plotting code (see below)
 tests/        unit tests for datasets, statistics and intervention hooks
 data/final/   frozen datasets, per-example results and summary of every final experiment
+data/extra/   follow-up runs requested in the advisor review
 data/colab/   independent rerun of two experiments on a Google Colab T4 GPU
 outputs/      discovery-split rankings, induction confirmation, model equivalence check
 figures/final/, tables/final/   figures and tables used in the thesis
@@ -65,6 +66,8 @@ All numbers, tables and figures in the thesis are computed from the saved result
 uv run python -m scripts.summarize_final   # data/final/*.json -> data/final/summary.json
 uv run python -m scripts.final_tables      # -> tables/final/
 uv run python -m scripts.plot_final        # -> figures/final/
+uv run python -m scripts.plot_extra        # redraws sufficiency_curves with the follow-up runs
+uv run python -m scripts.review_checks     # numbers added after the advisor review
 uv run --with pytest python -m pytest -q
 ```
 
@@ -98,6 +101,25 @@ minutes (`data/final/budget_ledger.json`).
 `notebooks/reproduction_colab.ipynb` (in Portuguese) installs the pinned versions on
 Google Colab, reruns `behavior` and `bracket` and compares them with the saved results.
 On a T4, every value matched within 1e-4 logits (`data/colab/`).
+
+### Follow-up runs (advisor review, Nov 2026)
+
+`scripts/extra_experiments.py` adds modes requested after the advisor's first review.
+They use the same pairs, hooks and effect definitions as `curve_bracket` and
+`curve_indent`; results and summaries are in `data/extra/`
+(`python -m scripts.summarize_extra data/extra/<run>.json`).
+
+| Mode | Question | Saved result |
+|---|---|---|
+| `curve_bracket_seeds`, `curve_indent_seeds` | Random-order curves over 20 seeds (the first is the original seed) and ranked sizes 40, 48, 56 | `curve_*_seeds.json` |
+| `curve_bracket_fine`, `curve_indent_fine` | Every ranked size from 33 to 64, to find the smallest set that recovers 80% in both directions (36 and 49) | `curve_*_fine.json` |
+| `addback_bracket` | The 128 top-ranked heads plus each of the other 256, one at a time | `addback_bracket.json` |
+
+These runs took about 67 A10 minutes on Modal. `scripts/plot_extra.py` draws the
+sufficiency figure from them, and `scripts/final_tables.py` adds the fine sizes to
+`tables/final/curves.tex`. `scripts/review_checks.py` computes, without a GPU, the other
+numbers added after the review: the top token with comment lines, the detection
+ranking of all 384 heads and the delimiter effects by language.
 
 ### Earlier stages
 

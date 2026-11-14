@@ -47,9 +47,25 @@ def panel(ax, run, title):
     ranked = {n: values[f"ranked/{n}/forward"]["estimate"] for n in grid}
     ranked.update({int(k.split("/")[0]): v for k, v in seeds["ranked"].items()
                    if k.endswith("/forward")})
+    marked = sorted(ranked)
+    fine = json.loads((ROOT / f"data/extra/{run}_fine_summary.json").read_text())
+    reverse = {int(k.split("/")[0]): v for k, v in fine["ranked"].items()
+               if k.endswith("/reverse")}
+    ranked.update({int(k.split("/")[0]): v for k, v in fine["ranked"].items()
+                   if k.endswith("/forward")})
     sizes = sorted(ranked)
-    ax.plot(sizes, [100 * ranked[n] for n in sizes], "-o", color=RANKED, lw=2, ms=4,
+    ax.plot(sizes, [100 * ranked[n] for n in sizes], "-", color=RANKED, lw=2,
             label="Ordem da descoberta")
+    ax.plot(marked, [100 * ranked[n] for n in marked], "o", color=RANKED, ms=4)
+    # Smallest size that recovers >= 80% in both directions (all of 33..64 tested).
+    minimum = min(n for n in reverse if ranked[n] >= 0.8 and reverse[n] >= 0.8)
+    ax.plot([minimum], [100 * ranked[minimum]], "o", ms=7, mfc="white",
+            mec=RANKED, mew=1.5, zorder=5)
+    ax.annotate(f"mínimo: {minimum}", (minimum, 100 * ranked[minimum]),
+                xytext=(3, -17) if run == "curve_bracket" else (-9, 4),
+                textcoords="offset points",
+                ha="left" if run == "curve_bracket" else "right",
+                fontsize=8, color=RANKED)
     for n in grid:
         lo, hi = values[f"ranked/{n}/forward"]["ci"]
         ax.plot([n, n], [100 * lo, 100 * hi], color=RANKED, lw=1)
@@ -85,7 +101,7 @@ def main():
     handles, labels = axes[0].get_legend_handles_labels()
     order = [labels.index(t) for t in ("Ordem da descoberta", "Aleatórias: mediana",
                                        "Aleatórias: faixa 5–95%")]
-    axes[1].legend([handles[i] for i in order], [labels[i] for i in order],
+    axes[0].legend([handles[i] for i in order], [labels[i] for i in order],
                    loc="upper left", fontsize=8, frameon=False)
     fig.tight_layout()
     fig.savefig(OUT / "sufficiency_curves.pdf")
