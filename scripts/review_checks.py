@@ -11,11 +11,9 @@ No GPU and no third-party packages:
 * Delimiters by language (M6): candidate effects split by template language.
   Even templates are Python (swap offset +1), odd ones JavaScript (+2)
   (``data/final/bracket_validation.json``).
-* Discovery sample: which pairs ranked the 384 heads (``outputs/*/``), and the
-  candidates' delimiter effect by closer in the confirmation split.
-* Ranking robustness: the discovery ranking redone on every solved discovery pair
-  (``data/extra/discovery_*_all.json``, from ``bracket_modal.py --causal-kind heads``
-  and ``indentation_modal.py`` without ``--causal-limit``) against the original.
+* Discovery sample: which pairs ranked the 384 heads (``outputs/*/``: every
+  solved discovery pair), and the candidates' delimiter effect by closer in the
+  confirmation split.
 """
 
 from __future__ import annotations
@@ -121,48 +119,6 @@ def by_closer():
     return out
 
 
-RANKINGS = {
-    "bracket": (
-        "outputs/bracket_matching/causal_discovery.json",
-        "data/extra/discovery_bracket_all.json",
-        36,
-    ),
-    "indent": (
-        "outputs/indentation/discovery_causal.json",
-        "data/extra/discovery_indent_all.json",
-        49,
-    ),
-}
-
-
-def _ranking(path):
-    rows = json.loads((ROOT / path).read_text())["head_patching"]
-    rows = sorted(rows, key=lambda r: -r["bidirectional_score"])
-    return [(f"L{r['layer']}H{r['head']}", r["bidirectional_score"]) for r in rows]
-
-
-def ranking_robustness():
-    out = {}
-    for task, (original, full, curve_size) in RANKINGS.items():
-        a, b = _ranking(original), _ranking(full)
-        ra = {h: i for i, (h, _) in enumerate(a)}
-        rb = {h: i for i, (h, _) in enumerate(b)}
-        n = len(ra)
-        spearman = 1 - 6 * sum((ra[h] - rb[h]) ** 2 for h in ra) / (n * (n * n - 1))
-        out[task] = {
-            "full_sample_pairs": len(
-                json.loads((ROOT / full).read_text())["causal_sample_labels"]
-            ),
-            "top10_full": [(h, round(s, 3)) for h, s in b[:10]],
-            "original_top4_positions_in_full": {h: rb[h] + 1 for h, _ in a[:4]},
-            "spearman": spearman,
-            f"overlap_top{curve_size}": len(
-                {h for h, _ in a[:curve_size]} & {h for h, _ in b[:curve_size]}
-            ),
-        }
-    return out
-
-
 def main():
     print(
         json.dumps(
@@ -172,7 +128,6 @@ def main():
                 "delimiters_by_language": by_language(),
                 "discovery_sample": discovery_sample(),
                 "delimiters_by_closer": by_closer(),
-                "ranking_robustness": ranking_robustness(),
             },
             indent=2,
             ensure_ascii=False,

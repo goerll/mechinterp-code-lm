@@ -112,10 +112,10 @@ They use the same pairs, hooks and effect definitions as `curve_bracket` and
 | Mode | Question | Saved result |
 |---|---|---|
 | `curve_bracket_seeds`, `curve_indent_seeds` | Random-order curves over 20 seeds (the first is the original seed) and ranked sizes 40, 48, 56 | `curve_*_seeds.json` |
-| `curve_bracket_fine`, `curve_indent_fine` | Every ranked size from 33 to 64, to find the smallest set that recovers 80% in both directions (36 and 49) | `curve_*_fine.json` |
+| `curve_bracket_fine`, `curve_indent_fine` | Every ranked size from 33 to 64, to find the smallest set that recovers 80% in both directions (34 and 40) | `curve_*_fine.json` |
 | `addback_bracket` | The 128 top-ranked heads plus each of the other 256, one at a time | `addback_bracket.json` |
 
-These runs took about 67 A10 minutes on Modal. `scripts/plot_extra.py` draws the
+These runs took about 95 A10 minutes on Modal, including a rerun after the discovery rankings were extended to every solved pair. `scripts/plot_extra.py` draws the
 sufficiency figure from them, and `scripts/final_tables.py` adds the fine sizes to
 `tables/final/curves.tex`. `scripts/review_checks.py` computes, without a GPU, the other
 numbers added after the review: the top token with comment lines, the detection
@@ -130,7 +130,8 @@ ranking of all 384 heads and the delimiter effects by language.
   `scripts/induction_calibration_modal.py` evaluates them on new seeds
   (`outputs/induction_heads/calibration_confirmation.json`).
 - **Discovery rankings.** `scripts/bracket_modal.py` and `scripts/indentation_modal.py`
-  patch every head on the discovery split. The rankings in
+  patch every head on every discovery pair the model solves (82 delimiter pairs,
+  64 indentation pairs; `--mode causal --split discovery`, no `--causal-limit`). The rankings in
   `outputs/bracket_matching/causal_discovery.json` and
   `outputs/indentation/discovery_causal.json` define the candidates and the order used
   in the sufficiency curves.

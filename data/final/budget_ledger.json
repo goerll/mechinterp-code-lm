@@ -34,16 +34,16 @@
     {
       "file": "curve_bracket.json",
       "mode": "curve_bracket",
-      "gpu_function_seconds": 145.79257941246033,
-      "client_wall_seconds": 158.39548563957214,
-      "gpu_only_runtime_estimate_usd": 0.04461252930021286
+      "gpu_function_seconds": 150.33485054969788,
+      "client_wall_seconds": 162.02337002754211,
+      "gpu_only_runtime_estimate_usd": 0.04600246426820755
     },
     {
       "file": "curve_indent.json",
       "mode": "curve_indent",
-      "gpu_function_seconds": 106.7960913181305,
-      "client_wall_seconds": 118.70192790031433,
-      "gpu_only_runtime_estimate_usd": 0.03267960394334793
+      "gpu_function_seconds": 107.68246531486511,
+      "client_wall_seconds": 119.23674011230469,
+      "gpu_only_runtime_estimate_usd": 0.03295083438634872
     },
     {
       "file": "delimiter_events.json",
@@ -88,9 +88,9 @@
       "gpu_only_runtime_estimate_usd": 0.0755766669831276
     }
   ],
-  "new_gpu_function_seconds": 1617.2543590068817,
-  "gpu_only_runtime_estimate_usd": 0.49487983385610584,
-  "conservative_compute_allowance_used_usd": 0.9812091420054436,
+  "new_gpu_function_seconds": 1622.6830041408539,
+  "gpu_only_runtime_estimate_usd": 0.4965409992671013,
+  "conservative_compute_allowance_used_usd": 0.9834986251354219,
   "user_total_limit_usd": 30,
   "final_pass_allowance_usd": 8,
   "note": "Runtime estimate, not an invoice. GPU function time omits some cold starts; CPU, memory, volumes and earlier sessions are not fully reconciled. No new paid subscription."

@@ -128,8 +128,18 @@ def main():
 
     sizes = (0, 4, 8, 16, 32, 64, 128, 384)
     if fine:
-        # 35/36 and 48/49: last insufficient and first sufficient size.
-        sizes = sorted(set(sizes) | {35, 36, 40, 48, 49, 56})
+        # For each task: the last insufficient and the first sufficient size
+        # (at least 80% in both directions), plus 48 and 56 for context.
+        extra = {48, 56}
+        for run, values in fine.items():
+            ok = [
+                n
+                for n in range(33, 65)
+                if values[f"{n}/forward"] >= 0.8 and values[f"{n}/reverse"] >= 0.8
+            ]
+            if ok:
+                extra |= {min(ok) - 1, min(ok)}
+        sizes = sorted(set(sizes) | extra)
     for n in sizes:
         values = []
         for run in ("curve_bracket", "curve_indent"):

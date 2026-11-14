@@ -55,3 +55,4 @@ data/rerun/
 
 # Modal client logs of the follow-up runs
 data/extra/log_*.txt
+data/extra/logs_*/
