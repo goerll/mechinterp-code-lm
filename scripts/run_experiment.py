@@ -35,6 +35,8 @@ MODES = (
     "curve_bracket_seeds",
     "curve_indent_seeds",
     "addback_bracket",
+    "curve_bracket_fine",
+    "curve_indent_fine",
 )
 
 

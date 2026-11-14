@@ -494,7 +494,13 @@ def run(mode, dataset=None):
         rows = behavior(model, [shift_boundary(r) for r in dataset["transfer"]])
         payload["behavior"] = rows
         payload["validation"] = validate(model, rows, exhaustive=False)
-    elif mode in ("curve_bracket_seeds", "curve_indent_seeds", "addback_bracket"):
+    elif mode in (
+        "curve_bracket_seeds",
+        "curve_indent_seeds",
+        "addback_bracket",
+        "curve_bracket_fine",
+        "curve_indent_fine",
+    ):
         from scripts.extra_experiments import run_extra
 
         payload.update(run_extra(model, mode, dataset))

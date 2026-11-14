@@ -11,6 +11,9 @@ eligible confirmation pairs, hooks and effect definitions as ``circuit_curves``:
   Do some of the remaining 256 heads oppose the behavior?  Each remaining head is
   added back to the 128-head set on its own; an effect drop below the 128-head
   value means that head pulls the margin the other way.
+* ``curve_*_fine``: decided at the advisor meeting (2026-11-12). The coarse runs
+  bracket the minimum between 33 and 40 heads (delimiters) and 49 and 56
+  (indentation); this mode tests every discovery-ranked size from 33 to 64.
 """
 
 from __future__ import annotations
@@ -25,6 +28,7 @@ ORIGINAL_SEED = 20260906
 RANDOM_SEEDS = (ORIGINAL_SEED,) + tuple(range(1, 20))
 GRID = (4, 8, 16, 32, 64, 128)
 EXTRA_RANKED = (40, 48, 56)
+FINE_RANKED = tuple(range(33, 65))
 
 
 def _all_heads(model):
@@ -83,6 +87,17 @@ def curve_seeds(model, rows, ranking):
     return output
 
 
+def curve_fine(model, rows, ranking):
+    ranked = _full_ranking(model, ranking)
+    sets = [(f"ranked/{n}", ranked[:n]) for n in FINE_RANKED]
+    output = []
+    for index, row in enumerate(_eligible(rows)):
+        output.append(dict(row, curve=_effects(model, row, sets)))
+        if (index + 1) % 8 == 0:
+            print(f"fine {row['task']} {index + 1}", flush=True)
+    return output
+
+
 def addback(model, rows, ranking, base_size=128):
     ranked = _full_ranking(model, ranking)
     base = ranked[:base_size]
@@ -96,7 +111,13 @@ def addback(model, rows, ranking, base_size=128):
     return output
 
 
-EXTRA_MODES = ("curve_bracket_seeds", "curve_indent_seeds", "addback_bracket")
+EXTRA_MODES = (
+    "curve_bracket_seeds",
+    "curve_indent_seeds",
+    "addback_bracket",
+    "curve_bracket_fine",
+    "curve_indent_fine",
+)
 
 
 def run_extra(model, mode, dataset):
@@ -111,7 +132,9 @@ def run_extra(model, mode, dataset):
     rows = behavior(model, pairs)
     ranking = dataset["rankings"][task]
     payload = {"behavior": rows, "random_seeds": RANDOM_SEEDS}
-    if mode.startswith("curve_"):
+    if mode.endswith("_fine"):
+        payload["curves"] = curve_fine(model, rows, ranking)
+    elif mode.startswith("curve_"):
         payload["curves"] = curve_seeds(model, rows, ranking)
     else:
         payload["curves"] = addback(model, rows, ranking)
