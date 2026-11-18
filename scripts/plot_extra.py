@@ -48,16 +48,19 @@ def panel(ax, run, title):
     ranked.update({int(k.split("/")[0]): v for k, v in seeds["ranked"].items()
                    if k.endswith("/forward")})
     marked = sorted(ranked)
-    fine = json.loads((ROOT / f"data/extra/{run}_fine_summary.json").read_text())
-    reverse = {int(k.split("/")[0]): v for k, v in fine["ranked"].items()
+    fine = {}
+    for part in ("small", "fine"):  # every ranked size from 1 to 64
+        path = ROOT / f"data/extra/{run}_{part}_summary.json"
+        fine.update(json.loads(path.read_text())["ranked"])
+    reverse = {int(k.split("/")[0]): v for k, v in fine.items()
                if k.endswith("/reverse")}
-    ranked.update({int(k.split("/")[0]): v for k, v in fine["ranked"].items()
+    ranked.update({int(k.split("/")[0]): v for k, v in fine.items()
                    if k.endswith("/forward")})
     sizes = sorted(ranked)
     ax.plot(sizes, [100 * ranked[n] for n in sizes], "-", color=RANKED, lw=2,
             label="Ordem da descoberta")
     ax.plot(marked, [100 * ranked[n] for n in marked], "o", color=RANKED, ms=4)
-    # Smallest size that recovers >= 80% in both directions (all of 33..64 tested).
+    # Smallest size that recovers >= 80% in both directions (all of 1..64 tested).
     minimum = min(n for n in reverse if ranked[n] >= 0.8 and reverse[n] >= 0.8)
     ax.plot([minimum], [100 * ranked[minimum]], "o", ms=7, mfc="white",
             mec=RANKED, mew=1.5, zorder=5)
@@ -97,7 +100,7 @@ def main():
     fig, axes = plt.subplots(1, 2, figsize=FIGSIZE_FULL, sharey=True)
     panel(axes[0], "curve_bracket", "Delimitadores")
     panel(axes[1], "curve_indent", "Indentação")
-    axes[0].set_ylabel("Efeito recuperado (%)")
+    axes[0].set_ylabel("Recuperação (%)")
     handles, labels = axes[0].get_legend_handles_labels()
     order = [labels.index(t) for t in ("Ordem da descoberta", "Aleatórias: mediana",
                                        "Aleatórias: faixa 5–95%")]

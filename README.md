@@ -113,13 +113,15 @@ They use the same pairs, hooks and effect definitions as `curve_bracket` and
 |---|---|---|
 | `curve_bracket_seeds`, `curve_indent_seeds` | Random-order curves over 20 seeds (the first is the original seed) and ranked sizes 40, 48, 56 | `curve_*_seeds.json` |
 | `curve_bracket_fine`, `curve_indent_fine` | Every ranked size from 33 to 64, to find the smallest set that recovers 80% in both directions (34 and 40) | `curve_*_fine.json` |
+| `curve_bracket_small`, `curve_indent_small` | Every ranked size from 1 to 32, asked in the second review, so that 34 and 40 are the minimum over every size up to 64 | `curve_*_small.json` |
 | `addback_bracket` | The 128 top-ranked heads plus each of the other 256, one at a time | `addback_bracket.json` |
 
-These runs took about 95 A10 minutes on Modal, including a rerun after the discovery rankings were extended to every solved pair. `scripts/plot_extra.py` draws the
-sufficiency figure from them, and `scripts/final_tables.py` adds the fine sizes to
+These runs took about 95 A10 minutes on Modal, including a rerun after the discovery rankings were extended to every solved pair, plus about 7 minutes for the `_small` runs. `scripts/plot_extra.py` draws the
+sufficiency figure from them, and `scripts/final_tables.py` adds the fine and small sizes to
 `tables/final/curves.tex`. `scripts/review_checks.py` computes, without a GPU, the other
 numbers added after the review: the top token with comment lines, the detection
-ranking of all 384 heads and the delimiter effects by language.
+ranking of all 384 heads, the delimiter effects by language and how many levels the
+model exits after `pass`.
 
 ### Earlier stages
 

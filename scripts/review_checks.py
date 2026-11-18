@@ -124,7 +124,7 @@ def by_closer():
 def continuation_preference():
     rows = json.loads((ROOT / "data/final/boundary_run.json").read_text())["transfer"]
     rows = [r for r in rows if r["task"] == "continuation" and r["comment_lines"] == 0]
-    counts = Counter()
+    counts, exits = Counter(), Counter()
     for r in rows:
         for side in ("clean", "corrupt"):
             target, top, width = len(r[f"{side}_target"]), r[f"{side}_top_token"], r["width"]
@@ -134,11 +134,18 @@ def continuation_preference():
                     counts["keeps level"] += 1
                 elif n < target and (target - n) % width == 0:
                     counts["exits block (outer level)"] += 1
+                    levels = (target - n) // width
+                    exits[levels] += 1
                 else:
                     counts[f"other spaces ({n})"] += 1
             else:
                 counts[f"non-space {top!r}"] += 1
-    return {"pairs": len(rows), "entries": sum(counts.values()), "top_token": dict(counts)}
+    return {
+        "pairs": len(rows),
+        "entries": sum(counts.values()),
+        "top_token": dict(counts),
+        "levels_exited": dict(sorted(exits.items())),
+    }
 
 
 def main():

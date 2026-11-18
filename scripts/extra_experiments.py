@@ -14,6 +14,9 @@ eligible confirmation pairs, hooks and effect definitions as ``circuit_curves``:
 * ``curve_*_fine``: decided at the advisor meeting (2026-11-12). The coarse runs
   bracket the minimum between 33 and 40 heads (delimiters) and 49 and 56
   (indentation); this mode tests every discovery-ranked size from 33 to 64.
+* ``curve_*_small``: asked in the advisor's second review (2026-11-17). Tests every
+  discovery-ranked size from 1 to 32, so that the smallest sufficient size is the
+  minimum over all sizes up to 64 and not only over the tested grid.
 """
 
 from __future__ import annotations
@@ -29,6 +32,7 @@ RANDOM_SEEDS = (ORIGINAL_SEED,) + tuple(range(1, 20))
 GRID = (4, 8, 16, 32, 64, 128)
 EXTRA_RANKED = (40, 48, 56)
 FINE_RANKED = tuple(range(33, 65))
+SMALL_RANKED = tuple(range(1, 33))
 
 
 def _all_heads(model):
@@ -87,9 +91,9 @@ def curve_seeds(model, rows, ranking):
     return output
 
 
-def curve_fine(model, rows, ranking):
+def curve_fine(model, rows, ranking, sizes=FINE_RANKED):
     ranked = _full_ranking(model, ranking)
-    sets = [(f"ranked/{n}", ranked[:n]) for n in FINE_RANKED]
+    sets = [(f"ranked/{n}", ranked[:n]) for n in sizes]
     output = []
     for index, row in enumerate(_eligible(rows)):
         output.append(dict(row, curve=_effects(model, row, sets)))
@@ -117,6 +121,8 @@ EXTRA_MODES = (
     "addback_bracket",
     "curve_bracket_fine",
     "curve_indent_fine",
+    "curve_bracket_small",
+    "curve_indent_small",
 )
 
 
@@ -134,6 +140,8 @@ def run_extra(model, mode, dataset):
     payload = {"behavior": rows, "random_seeds": RANDOM_SEEDS}
     if mode.endswith("_fine"):
         payload["curves"] = curve_fine(model, rows, ranking)
+    elif mode.endswith("_small"):
+        payload["curves"] = curve_fine(model, rows, ranking, SMALL_RANKED)
     elif mode.startswith("curve_"):
         payload["curves"] = curve_seeds(model, rows, ranking)
     else:

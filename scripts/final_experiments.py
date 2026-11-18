@@ -500,6 +500,8 @@ def run(mode, dataset=None):
         "addback_bracket",
         "curve_bracket_fine",
         "curve_indent_fine",
+        "curve_bracket_small",
+        "curve_indent_small",
     ):
         from scripts.extra_experiments import run_extra
 

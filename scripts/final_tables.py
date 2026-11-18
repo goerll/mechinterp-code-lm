@@ -111,12 +111,13 @@ def main():
         r"Heads & Delim. limpa & Delim. reversa & Indent. limpa & Indent. reversa \\",
         r"\midrule",
     ]
-    # Follow-up runs (advisor review): every ranked size from 33 to 64.
+    # Follow-up runs (advisor reviews): every ranked size from 1 to 64.
     fine = {}
     for run in ("curve_bracket", "curve_indent"):
-        path = ROOT / f"data/extra/{run}_fine_summary.json"
-        if path.exists():
-            fine[run] = json.loads(path.read_text())["ranked"]
+        for part in ("small", "fine"):
+            path = ROOT / f"data/extra/{run}_{part}_summary.json"
+            if path.exists():
+                fine.setdefault(run, {}).update(json.loads(path.read_text())["ranked"])
 
     def curve_value(run, n, direction):
         key = f"ranked/{n}/{direction}"
@@ -134,8 +135,9 @@ def main():
         for run, values in fine.items():
             ok = [
                 n
-                for n in range(33, 65)
-                if values[f"{n}/forward"] >= 0.8 and values[f"{n}/reverse"] >= 0.8
+                for n in range(1, 65)
+                if f"{n}/forward" in values
+                and values[f"{n}/forward"] >= 0.8 and values[f"{n}/reverse"] >= 0.8
             ]
             if ok:
                 extra |= {min(ok) - 1, min(ok)}
