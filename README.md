@@ -1,8 +1,9 @@
 # mechinterp-code-lm
 
 Code, data and results for the bachelor's thesis *Interpretabilidade mecanística
-aplicada a modelos de linguagem para programação* (Mechanistic interpretability
-applied to language models for programming), by Estevão Goerll Nascimento, advised by
+aplicada a modelos de linguagem para programação: um estudo de caso com o
+SantaCoder* (Mechanistic interpretability applied to language models for
+programming: a case study with SantaCoder), by Estevão Goerll Nascimento, advised by
 Prof. Dr. Paulo Cesar Rodacki Gomes. Bachelor's program in Computer Science, Instituto
 Federal Catarinense (IFC), Campus Blumenau, 2026.
 
